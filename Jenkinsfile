@@ -1,8 +1,9 @@
+
 pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "deepaknr17/imagename"
+        DOCKER_IMAGE = 'deepaknr17/imagename'
     }
 
     stages {
@@ -10,6 +11,14 @@ pipeline {
             steps {
                 git branch: 'master',
                     url: 'https://github.com/Deepak-NR17/ee.git'
+            }
+        }
+
+        stage('Check Docker') {
+            steps {
+                bat 'where docker'
+                bat 'docker --version'
+                bat 'docker info'
             }
         }
 
@@ -21,14 +30,16 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([string(
-                    credentialsId: 'dockerhub-PAT',
-                    variable: 'DOCKER_PAT'
-                )]) {
+                withCredentials([
+                    string(
+                        credentialsId: 'dockerhub-PAT',
+                        variable: 'DOCKER_PAT'
+                    )
+                ]) {
                     bat '''
-                    @echo off
-                    echo %DOCKER_PAT%|docker login -u deepaknr17 --password-stdin
-                   if errorlevel 1 exit /b 1
+                        @echo off
+                        echo %DOCKER_PAT%| docker login -u deepaknr17 --password-stdin
+                        if errorlevel 1 exit /b 1
                     '''
                 }
             }
