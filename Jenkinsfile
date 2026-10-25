@@ -4,7 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "deepaknr17/imagename"
         IMAGE_TAG = "latest"
-        DOCKER_PATH = '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"'
+        // Updated with your exact Docker path
+        DOCKER_PATH = '"C:\\Users\\Deepak\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe"'
     }
 
     stages {
@@ -29,7 +30,7 @@ pipeline {
                 )]) {
                     bat '''
                     @echo off
-                    echo %DOCKER_PAT%| "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u deepaknr17 --password-stdin
+                    echo %DOCKER_PAT%| "C:\\Users\\Deepak\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u deepaknr17 --password-stdin
                     if errorlevel 1 exit /b 1
                     '''
                 }
