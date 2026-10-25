@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "deepaknr17/imagename"
-        IMAGE_TAG = "latest" // Change this to "v1" if you prefer
+        IMAGE_TAG = "latest"
+        DOCKER_PATH = '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"'
     }
 
     stages {
@@ -16,7 +17,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t %DOCKER_IMAGE%:%IMAGE_TAG% .'
+                bat "${DOCKER_PATH} build -t %DOCKER_IMAGE%:%IMAGE_TAG% ."
             }
         }
 
@@ -28,7 +29,7 @@ pipeline {
                 )]) {
                     bat '''
                     @echo off
-                    echo %DOCKER_PAT%|docker login -u deepaknr17 --password-stdin
+                    echo %DOCKER_PAT%| "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe" login -u deepaknr17 --password-stdin
                     if errorlevel 1 exit /b 1
                     '''
                 }
@@ -37,7 +38,7 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                bat 'docker push %DOCKER_IMAGE%:%IMAGE_TAG%'
+                bat "${DOCKER_PATH} push %DOCKER_IMAGE%:%IMAGE_TAG%"
             }
         }
     }
