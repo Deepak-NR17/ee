@@ -25,7 +25,7 @@ pipeline {
             steps {
                 // Using Username and Password binding
                 withCredentials([usernamePassword(
-                    credentialsId: 'docker-credentials', // <-- Change this to match your Jenkins credential ID
+                    credentialsId: 'docker-creds', // <-- Change this to match your Jenkins credential ID
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
