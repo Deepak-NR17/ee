@@ -23,15 +23,14 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                // Using Username and Password binding
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds', // <-- Change this to match your Jenkins credential ID
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
+                // Using your Secret text credential ID 'dockerhub-creds'
+                withCredentials([string(
+                    credentialsId: 'dockerhub-creds',
+                    variable: 'DOCKER_PAT'
                 )]) {
                     bat '''
                     @echo off
-                    echo %DOCKER_PASS%| %DOCKER_PATH% login -u %DOCKER_USER% --password-stdin
+                    echo %DOCKER_PAT%| %DOCKER_PATH% login -u deepaknr17 --password-stdin
                     if errorlevel 1 exit /b 1
                     '''
                 }
