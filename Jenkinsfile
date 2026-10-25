@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = "deepaknr17/imagename"
         IMAGE_TAG = "latest"
-        // Updated with your exact Docker path
         DOCKER_PATH = '"C:\\Users\\Deepak\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe"'
     }
 
@@ -24,13 +23,15 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([string(
-                    credentialsId: 'dockerhub-PAT',
-                    variable: 'DOCKER_PAT'
+                // Using Username and Password binding
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-credentials', // <-- Change this to match your Jenkins credential ID
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
                 )]) {
                     bat '''
                     @echo off
-                    echo %DOCKER_PAT%| "C:\\Users\\Deepak\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u deepaknr17 --password-stdin
+                    echo %DOCKER_PASS%| %DOCKER_PATH% login -u %DOCKER_USER% --password-stdin
                     if errorlevel 1 exit /b 1
                     '''
                 }
